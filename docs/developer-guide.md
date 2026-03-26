@@ -1,6 +1,6 @@
 # Developer Guide
 
-This guide is for programmers working on the Resilience Hub desktop codebase.
+This guide is for programmers working on the Civic Beacon desktop codebase.
 
 ## Setup
 
@@ -28,14 +28,14 @@ $env:PIP_CACHE_DIR='g:\Projects\.pip-cache'
 Syntax verification:
 
 ```powershell
-python -m compileall main.py resilience_hub
+python -m compileall main.py civic_beacon
 ```
 
 Headless launch verification:
 
 ```powershell
 $env:QT_QPA_PLATFORM='offscreen'
-python -c "from resilience_hub.app import main; raise SystemExit(0)"
+python -c "from civic_beacon.app import main; raise SystemExit(0)"
 ```
 
 For a real UI run, use:
@@ -50,23 +50,23 @@ python main.py
 
 Local repository entrypoint. Keep this minimal.
 
-### `resilience_hub/app.py`
+### `civic_beacon/app.py`
 
 Bootstraps `QApplication`, applies styling, and shows the main window.
 
-### `resilience_hub/theme.py`
+### `civic_beacon/theme.py`
 
 Centralized stylesheet. Visual changes should generally start here instead of being mixed into widget code.
 
-### `resilience_hub/models.py`
+### `civic_beacon/models.py`
 
 Shared dataclasses and constant option lists. If a new screen or workflow needs new domain data, add the model here first.
 
-### `resilience_hub/seed.py`
+### `civic_beacon/seed.py`
 
 The in-memory dataset used by the MVP. Also holds the current volunteer matching heuristic.
 
-### `resilience_hub/controller.py`
+### `civic_beacon/controller.py`
 
 The workflow layer. This is the place for:
 
@@ -76,7 +76,7 @@ The workflow layer. This is the place for:
 - assignment lifecycle rules
 - future application-service integration
 
-### `resilience_hub/main_window.py`
+### `civic_beacon/main_window.py`
 
 The view layer. This file should focus on:
 

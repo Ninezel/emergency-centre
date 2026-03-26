@@ -14,7 +14,7 @@ def main() -> int:
     """Create and run the desktop application."""
 
     app = QApplication(sys.argv)
-    app.setApplicationName("Resilience Hub")
+    app.setApplicationName("Civic Beacon")
     app.setStyle("Fusion")
     app.setStyleSheet(APP_STYLESHEET)
 

@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "resilience-hub"
+name = "civic-beacon"
 version = "0.1.0"
-description = "Open-source community resilience platform with a PyQt desktop interface."
+description = "Civic Beacon is an open-source community resilience platform with a PyQt desktop interface."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "AGPL-3.0-or-later" }
@@ -21,7 +21,7 @@ Homepage = "https://ko-fi.com/ninezel"
 Funding = "https://ko-fi.com/ninezel"
 
 [project.scripts]
-resilience-hub = "resilience_hub.app:main"
+civic-beacon = "civic_beacon.app:main"
 
 [tool.setuptools]
-packages = ["resilience_hub"]
+packages = ["civic_beacon"]

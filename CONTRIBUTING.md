@@ -1,6 +1,6 @@
 # Contributing
 
-Resilience Hub is an open-source public-good project. Contributions are welcome, but the bar should stay practical: reliability, accessibility, privacy, and clear operational behavior matter more than feature count.
+Civic Beacon is an open-source public-good project. Contributions are welcome, but the bar should stay practical: reliability, accessibility, privacy, and clear operational behavior matter more than feature count.
 
 ## Before you start
 
@@ -22,7 +22,7 @@ python main.py
 For a quick syntax check:
 
 ```bash
-python -m compileall main.py resilience_hub
+python -m compileall main.py civic_beacon
 ```
 
 ## What to prioritize

@@ -1,4 +1,4 @@
-"""Primary PyQt window for the Resilience Hub desktop client.
+"""Primary PyQt window for the Civic Beacon desktop client.
 
 The window is responsible for:
 - building the widget tree
@@ -64,7 +64,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.controller = AppController()
 
-        self.setWindowTitle("Resilience Hub")
+        self.setWindowTitle("Civic Beacon")
         self.resize(1500, 1020)
 
         self._build_ui()
@@ -103,7 +103,7 @@ class MainWindow(QMainWindow):
         layout.setContentsMargins(18, 14, 18, 14)
 
         brand_box = QVBoxLayout()
-        brand_box.addWidget(QLabel("Resilience Hub", objectName="BrandTitle"))
+        brand_box.addWidget(QLabel("Civic Beacon", objectName="BrandTitle"))
         brand_box.addWidget(QLabel("Open-source community operations in PyQt", objectName="BrandSubtitle"))
 
         nav_box = QHBoxLayout()
@@ -145,7 +145,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(hero_title)
 
         hero_text = QLabel(
-            "Resilience Hub is a desktop command surface for neighborhoods, buildings, schools, "
+            "Civic Beacon is a desktop command surface for neighborhoods, buildings, schools, "
             "and civic groups to track incidents, collect check-ins, route requests, and keep "
             "recovery work accountable.",
             objectName="BodyText",

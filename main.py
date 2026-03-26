@@ -1,6 +1,6 @@
 """Repository entrypoint for local development."""
 
-from resilience_hub.app import main
+from civic_beacon.app import main
 
 
 if __name__ == "__main__":

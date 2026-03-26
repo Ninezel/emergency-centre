@@ -17,7 +17,7 @@ The current codebase is intentionally optimized for:
 ### 1. Entry layer
 
 - `main.py`
-- `resilience_hub/app.py`
+- `civic_beacon/app.py`
 
 Responsibilities:
 
@@ -29,7 +29,7 @@ This layer should stay extremely small. It should not contain feature logic.
 
 ### 2. View layer
 
-- `resilience_hub/main_window.py`
+- `civic_beacon/main_window.py`
 
 Responsibilities:
 
@@ -49,7 +49,7 @@ The view layer is allowed to know how data should be presented, but it should no
 
 ### 3. Controller layer
 
-- `resilience_hub/controller.py`
+- `civic_beacon/controller.py`
 
 Responsibilities:
 
@@ -66,7 +66,7 @@ This layer is the current home for workflow rules. If the app gains a real backe
 
 ### 4. Domain model layer
 
-- `resilience_hub/models.py`
+- `civic_beacon/models.py`
 
 Responsibilities:
 
@@ -77,7 +77,7 @@ These models are plain data carriers. They deliberately do not contain UI logic.
 
 ### 5. Seed and demo logic layer
 
-- `resilience_hub/seed.py`
+- `civic_beacon/seed.py`
 
 Responsibilities:
 
@@ -88,7 +88,7 @@ Because the project still runs without persistence, this module is the current s
 
 ### 6. Theme layer
 
-- `resilience_hub/theme.py`
+- `civic_beacon/theme.py`
 
 Responsibilities:
 
@@ -100,7 +100,7 @@ Keeping styling separate from widget composition makes `main_window.py` easier t
 
 ### Startup
 
-1. `main.py` imports and runs `resilience_hub.app.main()`.
+1. `main.py` imports and runs `civic_beacon.app.main()`.
 2. `app.py` creates `QApplication`, applies the theme, and shows `MainWindow`.
 3. `MainWindow` creates an `AppController`.
 4. `MainWindow` builds the static UI shell.

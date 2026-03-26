@@ -1,0 +1,1 @@
+"""Civic Beacon desktop application."""

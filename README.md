@@ -1,8 +1,8 @@
-# Resilience Hub
+# Civic Beacon
 
 Open-source community resilience software for neighborhoods, apartment buildings, schools, and local organizations.
 
-Resilience Hub helps communities coordinate before, during, and after local disruptions. The current MVP is a PyQt desktop application focused on incident updates, household check-ins, requests and offers, dispatch tracking, and local support nodes.
+Civic Beacon helps communities coordinate before, during, and after local disruptions. The current MVP is a PyQt desktop application focused on incident updates, household check-ins, requests and offers, dispatch tracking, and local support nodes.
 
 [Support ongoing development on Ko-Fi](https://ko-fi.com/ninezel)
 
@@ -36,12 +36,12 @@ Most local response work is still scattered across group chats, spreadsheets, ph
 ## Repository layout
 
 - `main.py`: local entrypoint for running the desktop app
-- `resilience_hub/app.py`: Qt application bootstrap
-- `resilience_hub/main_window.py`: view layer and widget composition
-- `resilience_hub/controller.py`: state orchestration and workflow actions
-- `resilience_hub/models.py`: dataclasses and shared constants
-- `resilience_hub/seed.py`: in-memory dataset and matching rules
-- `resilience_hub/theme.py`: centralized Qt stylesheet
+- `civic_beacon/app.py`: Qt application bootstrap
+- `civic_beacon/main_window.py`: view layer and widget composition
+- `civic_beacon/controller.py`: state orchestration and workflow actions
+- `civic_beacon/models.py`: dataclasses and shared constants
+- `civic_beacon/seed.py`: in-memory dataset and matching rules
+- `civic_beacon/theme.py`: centralized Qt stylesheet
 - `docs/`: architecture, feature, and contributor documentation
 
 ## Stack
