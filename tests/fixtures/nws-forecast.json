@@ -1,0 +1,20 @@
+{
+  "properties": {
+    "updated": "2026-03-26T13:00:00+00:00",
+    "periods": [
+      {
+        "name": "Today",
+        "startTime": "2026-03-26T06:00:00-07:00",
+        "isDaytime": true,
+        "temperature": 62,
+        "temperatureUnit": "F",
+        "probabilityOfPrecipitation": {
+          "value": 35
+        },
+        "windSpeed": "10 to 20 mph",
+        "shortForecast": "Mostly Cloudy",
+        "detailedForecast": "Mostly cloudy, then a slight chance of rain after noon."
+      }
+    ]
+  }
+}

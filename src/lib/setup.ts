@@ -1,5 +1,6 @@
 import type {
   AppSetup,
+  BriefingFreshness,
   Coordinates,
   FeedFetchStatus,
   LocationProfile,
@@ -9,6 +10,7 @@ import type {
 } from '../types'
 
 const SETUP_STORAGE_KEY = 'emergency-centre.setup.v1'
+const LEGACY_SETUP_STORAGE_KEYS = ['emergency-centre.setup.v2']
 
 function createEmptyWeather(): WeatherSnapshot {
   return {
@@ -17,6 +19,15 @@ function createEmptyWeather(): WeatherSnapshot {
     windKph: 0,
     rainChance: 0,
     advisory: 'Connect a live briefing feed to populate weather conditions.',
+  }
+}
+
+function createEmptyFreshness(message = 'Awaiting first successful live briefing sync.'): BriefingFreshness {
+  return {
+    status: 'stale',
+    checkedAt: new Date().toISOString(),
+    snapshotAgeMinutes: 0,
+    message,
   }
 }
 
@@ -34,6 +45,27 @@ function normalizeFetchStatus(value: unknown): FeedFetchStatus {
 
 function normalizeUnitSystem(value: unknown): UnitSystem {
   return value === 'imperial' ? 'imperial' : 'metric'
+}
+
+function normalizeFreshness(value: unknown): BriefingFreshness {
+  if (!value || typeof value !== 'object') {
+    return createEmptyFreshness()
+  }
+
+  const candidate = value as Partial<BriefingFreshness>
+
+  return {
+    status: candidate.status === 'live' ? 'live' : 'stale',
+    checkedAt:
+      typeof candidate.checkedAt === 'string' && candidate.checkedAt.trim()
+        ? candidate.checkedAt
+        : new Date().toISOString(),
+    snapshotAgeMinutes: Math.max(0, Number(candidate.snapshotAgeMinutes) || 0),
+    message:
+      typeof candidate.message === 'string' && candidate.message.trim()
+        ? candidate.message
+        : 'Awaiting first successful live briefing sync.',
+  }
 }
 
 function normalizeProfile(raw: unknown, index: number): LocationProfile | null {
@@ -86,6 +118,7 @@ function normalizeProfile(raw: unknown, index: number): LocationProfile | null {
         : 'Never synced',
     fetchStatus: normalizeFetchStatus(candidate.fetchStatus),
     fetchError: typeof candidate.fetchError === 'string' && candidate.fetchError.trim() ? candidate.fetchError : null,
+    freshness: normalizeFreshness(candidate.freshness),
   }
 }
 
@@ -119,6 +152,7 @@ export function createEmptyProfile(config: {
     lastUpdatedAt: 'Never synced',
     fetchStatus: 'idle',
     fetchError: null,
+    freshness: createEmptyFreshness(),
   }
 }
 
@@ -137,6 +171,7 @@ export function mergeLiveBriefing(
     lastUpdatedAt: briefing.refreshedAt ?? new Date().toISOString(),
     fetchStatus: 'live',
     fetchError: null,
+    freshness: briefing.freshness,
   }
 }
 
@@ -146,6 +181,12 @@ export function markProfileFetchError(profile: LocationProfile, message: string)
     fetchStatus: 'error',
     fetchError: message,
     lastUpdatedAt: profile.lastUpdatedAt || 'Sync failed',
+    freshness: {
+      ...profile.freshness,
+      status: 'stale',
+      checkedAt: new Date().toISOString(),
+      message,
+    },
   }
 }
 
@@ -161,6 +202,7 @@ export function createDefaultSetup(): AppSetup {
   return {
     pollingIntervalSeconds: 120,
     soundEnabled: true,
+    browserNotificationsEnabled: false,
     soundVolume: 0.45,
     unitSystem: 'metric',
     coverageProfiles: [],
@@ -172,7 +214,10 @@ export function readAppSetup(): AppSetup {
     return createDefaultSetup()
   }
 
-  const raw = window.localStorage.getItem(SETUP_STORAGE_KEY)
+  const raw =
+    window.localStorage.getItem(SETUP_STORAGE_KEY) ??
+    LEGACY_SETUP_STORAGE_KEYS.map((key) => window.localStorage.getItem(key)).find(Boolean) ??
+    null
 
   if (!raw) {
     return createDefaultSetup()
@@ -183,6 +228,7 @@ export function readAppSetup(): AppSetup {
     return {
       pollingIntervalSeconds: Math.max(30, Number(parsed.pollingIntervalSeconds) || 120),
       soundEnabled: parsed.soundEnabled ?? true,
+      browserNotificationsEnabled: parsed.browserNotificationsEnabled ?? false,
       soundVolume: Math.min(1, Math.max(0, Number(parsed.soundVolume) || 0.45)),
       unitSystem: normalizeUnitSystem(parsed.unitSystem),
       coverageProfiles: Array.isArray(parsed.coverageProfiles)
@@ -204,6 +250,7 @@ export function writeAppSetup(setup: AppSetup) {
   const serializedSetup = {
     pollingIntervalSeconds: setup.pollingIntervalSeconds,
     soundEnabled: setup.soundEnabled,
+    browserNotificationsEnabled: setup.browserNotificationsEnabled,
     soundVolume: setup.soundVolume,
     unitSystem: setup.unitSystem,
     coverageProfiles: setup.coverageProfiles.map((profile) => ({
@@ -222,4 +269,10 @@ export function writeAppSetup(setup: AppSetup) {
     SETUP_STORAGE_KEY,
     JSON.stringify(serializedSetup),
   )
+
+  LEGACY_SETUP_STORAGE_KEYS.forEach((key) => {
+    if (key !== SETUP_STORAGE_KEY) {
+      window.localStorage.removeItem(key)
+    }
+  })
 }

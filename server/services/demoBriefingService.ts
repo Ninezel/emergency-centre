@@ -163,5 +163,11 @@ export function buildDemoBriefing(zone: CoverageZoneTemplate): LiveBriefingRespo
       },
     ],
     refreshedAt,
+    freshness: {
+      status: 'live',
+      checkedAt: refreshedAt,
+      snapshotAgeMinutes: 0,
+      message: 'Demo briefing refreshed from the local sample service.',
+    },
   }
 }

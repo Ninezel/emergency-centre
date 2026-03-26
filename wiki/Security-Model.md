@@ -9,6 +9,7 @@ The browser currently stores:
 - configured coverage records
 - polling interval
 - sound preference
+- browser notification preference
 - unit preference
 
 Do not store secrets in browser local storage.
@@ -23,6 +24,7 @@ Current posture:
 - explicit live and demo briefing routes only
 - no generic open proxy
 - no account storage
+- stale fallback state is exposed through response freshness metadata rather than silently pretending the data is current
 
 ## Step-By-Step: Safer Feed Integration
 
@@ -31,7 +33,8 @@ Current posture:
 3. Keep routes explicit and documented.
 4. Label source names clearly in the returned data.
 5. Show delayed or manual-review states visibly.
-6. Avoid making unofficial data look authoritative.
+6. Surface stale snapshots explicitly if the upstream refresh fails after a previous success.
+7. Avoid making unofficial data look authoritative.
 
 ## Future Risk Guardrails
 

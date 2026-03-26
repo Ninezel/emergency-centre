@@ -30,7 +30,7 @@ That means the baseline app does not assume:
 6. Feed responses are normalized into the shared `LocationProfile` shape.
 7. Display preferences such as unit system are applied in the presentation layer.
 8. The selected profile is converted into a renderable briefing model.
-9. If new live signals appear, the browser can play an alert tone.
+9. If new live signals appear, the browser can play an alert tone and optionally raise browser notifications.
 
 ## Frontend architecture
 
@@ -44,6 +44,7 @@ Owns the top-level state:
 - sync status messaging
 - polling lifecycle
 - audio signal triggers
+- browser notification triggers and permission gating
 
 It is the coordination layer between setup, selection, feed refresh, and presentation components.
 
@@ -57,6 +58,7 @@ Responsible for:
 - safe defaults for old or partial data
 - merging live feed data into a profile
 - setting sync and error states
+- carrying forward freshness metadata and notification preferences
 
 ### `src/lib/feed.ts`
 
@@ -66,6 +68,7 @@ Owns baseline live-feed fetching:
 - requests JSON
 - validates the required top-level fields
 - normalizes array-like sections so the UI can render safely
+- normalizes `freshness` so stale snapshots degrade cleanly in the client
 
 This module is intentionally small. If deployments need stronger validation, they should extend it without leaking secrets into the browser.
 
@@ -75,11 +78,20 @@ Tracks operational sync behavior:
 
 - compares the previous and next live signal sets
 - counts newly arrived live signals
+- exposes the actual new live alert list for downstream actions
 - creates user-facing sync summaries
 
 ### `src/lib/audio.ts`
 
 Provides the browser alert tone. It uses the Web Audio API so the project does not need to ship a bundled media file just to support signal playback.
+
+### `src/lib/notifications.ts`
+
+Provides browser notification support:
+
+- notification permission checks
+- notification delivery for newly arrived live signals
+- safe no-op behavior when notifications are unsupported or denied
 
 ### `src/lib/location.ts`
 
@@ -124,7 +136,15 @@ Provides API-safe catalog helpers:
 
 ### `server/services/liveBriefingService.ts`
 
-Generates normalized live briefings for starter coverage zones by fetching and scraping a small allowlisted set of official public providers. The current adapters cover:
+Acts as the orchestrator for starter-zone live briefings. It reads provider metadata from the shared starter zone catalog, runs each allowlisted provider adapter, merges the normalized output, and attaches freshness metadata.
+
+### `server/services/briefingSnapshotStore.ts`
+
+Keeps a small in-memory last-known-good snapshot per live briefing route. If an upstream refresh fails after a previous success, the API can keep serving a clearly labeled stale snapshot while retrying the refresh in the background.
+
+### `server/services/providers/`
+
+Contains dedicated upstream adapters and shared parsing helpers. The current adapters cover:
 
 - NWS point forecasts and active alerts
 - Met Office public forecast pages and regional severe-weather warning RSS feeds
@@ -142,6 +162,7 @@ Builds the render-ready briefing:
 - sorts signal items by severity
 - calculates headline metrics and category counts
 - exposes refresh-state messaging for the selected profile
+- exposes source-health ratios and stale snapshot wording for the selected profile
 
 ### `src/components/`
 
@@ -157,6 +178,15 @@ The UI is split into focused surfaces:
 
 The product intentionally avoids a built-in map dependency in the current baseline. Coverage monitoring is driven by configured areas, search, and the directory dropdown.
 
+## Test coverage
+
+The repository now includes parser and fallback tests under `tests/`:
+
+- provider fixtures for NWS, Met Office, Environment Agency, and USGS payloads
+- snapshot-store tests for stale fallback behavior
+
+These tests are there to catch upstream contract or markup drift before it becomes a silent production break.
+
 ## Trust boundary
 
 Emergency Centre is a public client with an optional local API service. Feed URLs and feed responses are still visible to the browser when the browser fetches them directly.
@@ -166,6 +196,7 @@ Implications:
 - never place private API keys directly in a client-visible feed URL
 - use a proxy or edge adapter for protected upstream providers
 - label source provenance clearly in the returned data
+- surface stale fallback explicitly when the app is no longer showing a fully current response
 - do not make unofficial feeds look identical to official ones
 
 The local API added in this repo is intentionally narrow. It does not act as a generic open proxy.

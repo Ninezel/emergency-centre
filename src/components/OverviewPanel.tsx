@@ -27,9 +27,11 @@ export function OverviewPanel({
     ? 'Syncing'
     : selectedProfile?.fetchStatus === 'error'
       ? 'Needs attention'
-      : selectedProfile?.fetchStatus === 'live'
-        ? 'Live'
-        : 'Waiting'
+      : selectedProfile?.freshness.status === 'stale'
+        ? 'Stale snapshot'
+        : selectedProfile?.fetchStatus === 'live'
+          ? 'Live'
+          : 'Waiting'
 
   return (
     <section className="panel overview-panel">

@@ -105,10 +105,15 @@ export function AlertFeed({ signalFeed }: AlertFeedProps) {
               ) : null}
               <div className="record-footer">
                 <span>{signal.coverage}</span>
-                <span>
-                  {signal.hotspotLabel} · {signal.reactionCount} field reactions
-                </span>
+                <span>{signal.hotspotLabel} · {signal.reactionCount} field reactions</span>
               </div>
+              {signal.link ? (
+                <div className="record-footer">
+                  <a href={signal.link} target="_blank" rel="noreferrer">
+                    Open official source
+                  </a>
+                </div>
+              ) : null}
             </article>
           ))
         ) : (

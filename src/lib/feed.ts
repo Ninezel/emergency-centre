@@ -4,6 +4,32 @@ function ensureArray<T>(value: unknown): T[] {
   return Array.isArray(value) ? (value as T[]) : []
 }
 
+function normalizeFreshness(value: unknown): LiveBriefingResponse['freshness'] {
+  if (!value || typeof value !== 'object') {
+    return {
+      status: 'live',
+      checkedAt: new Date().toISOString(),
+      snapshotAgeMinutes: 0,
+      message: 'Live provider data refreshed successfully.',
+    }
+  }
+
+  const candidate = value as Partial<LiveBriefingResponse['freshness']>
+
+  return {
+    status: candidate.status === 'stale' ? 'stale' : 'live',
+    checkedAt:
+      typeof candidate.checkedAt === 'string' && candidate.checkedAt.trim()
+        ? candidate.checkedAt
+        : new Date().toISOString(),
+    snapshotAgeMinutes: Math.max(0, Number(candidate.snapshotAgeMinutes) || 0),
+    message:
+      typeof candidate.message === 'string' && candidate.message.trim()
+        ? candidate.message
+        : 'Live provider data refreshed successfully.',
+  }
+}
+
 export async function fetchLiveBriefing(profile: LocationProfile): Promise<LiveBriefingResponse> {
   const response = await fetch(profile.briefingUrl, {
     headers: {
@@ -31,5 +57,6 @@ export async function fetchLiveBriefing(profile: LocationProfile): Promise<LiveB
     sources: ensureArray(payload.sources),
     actions: ensureArray(payload.actions),
     refreshedAt: payload.refreshedAt,
+    freshness: normalizeFreshness(payload.freshness),
   }
 }

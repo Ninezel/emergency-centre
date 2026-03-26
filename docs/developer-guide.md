@@ -39,6 +39,12 @@ Run the compiled API after `npm run build` with:
 npm run start:api
 ```
 
+Run provider parser and snapshot-store tests with:
+
+```powershell
+npm test
+```
+
 ## Project layout
 
 - `src/App.tsx`: state orchestration, polling, selection, and top-level composition
@@ -49,14 +55,18 @@ npm run start:api
 - `src/lib/feed.ts`: live feed fetching
 - `src/lib/alertSync.ts`: sync summaries and new-signal detection
 - `src/lib/audio.ts`: signal sound playback
+- `src/lib/notifications.ts`: browser notification helpers
 - `src/lib/location.ts`: search and selection logic
 - `src/lib/coverageCatalog.ts`: built-in coverage starter data and postcode / ZIP lookup
 - `src/lib/briefing.ts`: briefing shaping and summary metrics
 - `server/index.ts`: optional local API entrypoint
 - `server/services/catalogService.ts`: API-facing starter zone catalog services
-- `server/services/liveBriefingService.ts`: live provider adapters and normalization for starter zones
+- `server/services/liveBriefingService.ts`: live provider orchestration and response composition for starter zones
+- `server/services/briefingSnapshotStore.ts`: last-known-good stale snapshot handling for live briefings
+- `server/services/providers/`: dedicated upstream adapters and shared parsing helpers
 - `server/services/providerCache.ts`: allowlisted upstream fetch and in-memory cache helpers
 - `server/services/demoBriefingService.ts`: demo API briefing generation
+- `tests/`: provider fixtures and snapshot fallback tests
 - `src/types.ts`: shared frontend contracts
 - `src/styles.css`: visual system and responsive layout
 
@@ -89,6 +99,7 @@ The open-source core stores setup in browser local storage. That currently inclu
 - configured coverage records
 - polling interval
 - signal sound preference
+- browser notification preference
 - signal volume preference
 - unit system preference
 
@@ -106,11 +117,14 @@ Do not treat this as a secure store. It is a convenience layer for local configu
 Before opening a pull request:
 
 - run `npm run build`
+- run `npm test` if you changed provider parsing, snapshot behavior, or the live briefing contract
 - if you changed server behavior, run `npm run start:api` and hit at least one live starter route
 - test the setup flow by adding and removing a coverage feed
 - test a successful live refresh
 - test a failing feed URL and confirm the error state is visible
+- if a stale fallback path exists, confirm it is surfaced clearly rather than silently looking live
 - test the sound button in the browser
+- if you touched notification logic, test permission grant and denial paths
 - confirm mobile layout still works
 - update the docs set if behavior changed
 

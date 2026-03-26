@@ -1,0 +1,26 @@
+{
+  "items": [
+    {
+      "@id": "https://environment.data.gov.uk/flood-monitoring/id/floods/001",
+      "description": "River Thames at Putney",
+      "eaAreaName": "London area",
+      "eaRegionName": "Thames",
+      "severity": "Flood warning",
+      "severityLevel": 2,
+      "timeRaised": "2026-03-26T09:00:00Z",
+      "timeMessageChanged": "2026-03-26T09:30:00Z",
+      "floodArea": {
+        "county": "Greater London",
+        "riverOrSea": "River Thames"
+      },
+      "message": "Flooding is expected in riverside roads near Putney."
+    },
+    {
+      "@id": "https://environment.data.gov.uk/flood-monitoring/id/floods/002",
+      "description": "Historic notice that should be ignored",
+      "severity": "Warning no longer in force",
+      "severityLevel": 4,
+      "timeRaised": "2026-03-25T09:00:00Z"
+    }
+  ]
+}

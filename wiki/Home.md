@@ -9,7 +9,9 @@ It currently includes:
 - postcode and ZIP lookup
 - an optional local Node API
 - live briefing endpoints backed by official providers for the built-in starter zones
+- freshness-aware stale snapshot fallback for live starter routes
 - demo briefing endpoints as a fallback when you want a deterministic local feed
+- browser sound alerts and optional browser notifications for new live signals
 
 Project links:
 
@@ -60,6 +62,7 @@ Follow:
 - `Signals`: normalized weather, infrastructure, transport, airspace, public-safety, or other monitoring items
 - `Starter directory`: built-in bootstrap coverage data for supported countries
 - `Live briefing`: normalized feed data served by the local API from allowlisted official providers
+- `Freshness`: whether the response is fully live or a clearly labeled stale snapshot
 - `Demo briefing`: generated fallback feed data served by the local API
 
 ## Main Pages

@@ -84,6 +84,12 @@ Returns one built-in starter zone by ID.
 
 Returns a normalized live briefing for the requested starter zone using the built-in provider adapters.
 
+Response behavior:
+
+- includes a top-level `freshness` object
+- may return `freshness.status = "stale"` when the API is serving the last-known-good snapshot during a background refresh retry
+- sets `X-EC-Data-State` to `live` or `stale`
+
 Current starter coverage:
 
 - `US`: NWS forecast plus active alerts, with nearby USGS earthquakes
@@ -109,3 +115,13 @@ If you extend the API:
 - keep upstream providers allowlisted
 - document every new endpoint
 - do not add a generic user-supplied proxy route
+
+## Testing
+
+Run the parser and snapshot tests with:
+
+```powershell
+npm test
+```
+
+Those tests exist to catch upstream payload and markup drift before it becomes a silent live-data break.

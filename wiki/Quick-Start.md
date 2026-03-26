@@ -37,6 +37,7 @@ npm run dev
 8. Leave the feed URL blank if you want to use the built-in live-provider API endpoint.
 9. Add the coverage area.
 10. Confirm the overview and signals panels populate.
+11. Optionally enable browser notifications in the setup panel if you want desktop alerts for new live signals.
 
 ## If You Only Want The API
 
@@ -47,6 +48,7 @@ npm run dev:api
 Then open:
 
 - `http://localhost:8787/api/health`
+- `http://localhost:8787/api/briefings/live/gb-eng-greater-london-central`
 
 ## If You Want A Production Build
 
@@ -64,3 +66,14 @@ Run the compiled API with:
 ```powershell
 npm run start:api
 ```
+
+## If You Want To Run The Automated Checks
+
+```powershell
+npm test
+```
+
+That currently covers:
+
+- provider parser fixtures
+- stale snapshot fallback behavior

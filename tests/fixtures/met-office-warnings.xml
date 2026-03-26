@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Met Office warnings for London &amp; South East England</title>
+    <pubDate>Thu, 26 Mar 2026 08:32:00 GMT</pubDate>
+    <item>
+      <title>Amber warning for rain</title>
+      <description>Persistent rain may cause flooding and transport disruption.</description>
+      <pubDate>Thu, 26 Mar 2026 08:00:00 GMT</pubDate>
+      <guid>met-office-warning-amber-rain</guid>
+      <link>https://weather.metoffice.gov.uk/warnings-and-advice/uk-warnings#amber-rain</link>
+    </item>
+    <item>
+      <title>Yellow warning for wind</title>
+      <description>Strong winds may affect coastal travel later today.</description>
+      <pubDate>Thu, 26 Mar 2026 07:30:00 GMT</pubDate>
+      <guid>met-office-warning-yellow-wind</guid>
+      <link>https://weather.metoffice.gov.uk/warnings-and-advice/uk-warnings#yellow-wind</link>
+    </item>
+  </channel>
+</rss>

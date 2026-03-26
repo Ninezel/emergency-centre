@@ -15,23 +15,27 @@ function collectLiveSignatures(profiles: LocationProfile[]) {
 }
 
 export function countNewLiveAlerts(previousProfiles: LocationProfile[], nextProfiles: LocationProfile[]) {
+  return collectNewLiveAlerts(previousProfiles, nextProfiles).length
+}
+
+export function collectNewLiveAlerts(previousProfiles: LocationProfile[], nextProfiles: LocationProfile[]) {
   const previous = collectLiveSignatures(previousProfiles)
-  const next = collectLiveSignatures(nextProfiles)
-
-  let count = 0
-
-  next.forEach((signature) => {
-    if (!previous.has(signature)) {
-      count += 1
-    }
-  })
-
-  return count
+  return nextProfiles.flatMap((profile) =>
+    profile.signals
+      .filter((signal) => signal.status === 'Live')
+      .filter((signal) => !previous.has(`${profile.id}:${buildLiveSignature(signal)}`))
+      .map((signal) => ({
+        profile,
+        signal,
+      })),
+  )
 }
 
 export function summarizeSyncResult(profiles: LocationProfile[], newAlertCount: number) {
   const syncedCount = profiles.filter((profile) => profile.fetchStatus === 'live').length
   const errorCount = profiles.filter((profile) => profile.fetchStatus === 'error').length
+  const staleCount = profiles.filter((profile) => profile.fetchStatus === 'live' && profile.freshness.status === 'stale')
+    .length
   const profileCount = profiles.length
 
   if (profileCount === 0) {
@@ -50,6 +54,10 @@ export function summarizeSyncResult(profiles: LocationProfile[], newAlertCount: 
 
   if (errorCount > 0) {
     parts.push(`${errorCount} feed${errorCount === 1 ? '' : 's'} still need attention.`)
+  }
+
+  if (staleCount > 0) {
+    parts.push(`${staleCount} coverage ${staleCount === 1 ? 'snapshot is' : 'snapshots are'} currently stale.`)
   }
 
   return parts.join(' ')

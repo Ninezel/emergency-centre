@@ -57,6 +57,7 @@ export function SituationPanels({ briefing, unitSystem }: SituationPanelsProps) 
           </article>
         </div>
         <p className="panel-copy">{briefing.weather.advisory}</p>
+        <p className="panel-copy">{briefing.selectedLocation.profile.freshness.message}</p>
       </section>
 
       <StackSection<NewsItem>
@@ -77,6 +78,13 @@ export function SituationPanels({ briefing, unitSystem }: SituationPanelsProps) 
               <span className="status-chip status-light">{news.scope}</span>
             </div>
             <p>{news.summary}</p>
+            {news.link ? (
+              <div className="record-footer">
+                <a href={news.link} target="_blank" rel="noreferrer">
+                  Open source update
+                </a>
+              </div>
+            ) : null}
           </article>
         )}
       />
@@ -110,12 +118,20 @@ export function SituationPanels({ briefing, unitSystem }: SituationPanelsProps) 
               <div>
                 <strong>{source.name}</strong>
                 <p>
-                  {source.type} · last sync {source.lastSync}
+                  {source.type} · {source.method ?? 'Verified feed'} · last sync {source.lastSync}
                 </p>
               </div>
               <span className="status-chip status-light">{source.status}</span>
             </div>
             <p>{source.note}</p>
+            {source.link ? (
+              <div className="record-footer">
+                <span>{source.fetchedAt ? `Fetched ${source.fetchedAt}` : 'Fetched from source'}</span>
+                <a href={source.link} target="_blank" rel="noreferrer">
+                  Open source
+                </a>
+              </div>
+            ) : null}
           </article>
         )}
       />

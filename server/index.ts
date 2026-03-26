@@ -115,8 +115,10 @@ app.get('/api/briefings/live/:zoneId', async (request, response) => {
   }
 
   try {
-    response.set('Cache-Control', 'public, max-age=60')
-    response.json(await buildLiveBriefing(zone))
+    const briefing = await buildLiveBriefing(zone)
+    response.set('Cache-Control', 'public, max-age=30, stale-while-revalidate=120')
+    response.set('X-EC-Data-State', briefing.freshness.status)
+    response.json(briefing)
   } catch (error) {
     response.status(502).json({
       error: 'live_briefing_fetch_failed',

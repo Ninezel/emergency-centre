@@ -68,6 +68,13 @@ Returns one built-in starter zone by ID.
 
 Returns a normalized live briefing for one starter zone.
 
+Response notes:
+
+- includes a top-level `freshness` object
+- may return `freshness.status = "stale"` when the service is serving the last-known-good snapshot during a background refresh retry
+- sets `X-EC-Data-State` to `live` or `stale`
+- uses `Cache-Control: public, max-age=30, stale-while-revalidate=120`
+
 Current starter-provider coverage:
 
 - `US`: NWS forecast plus active alerts, with nearby USGS earthquakes
@@ -110,6 +117,15 @@ $env:npm_config_cache='g:\Projects\.npm-cache'
 npm run build
 ```
 
+Run provider parser and snapshot-store tests:
+
+```powershell
+$env:TEMP='g:\Projects\.tmp'
+$env:TMP='g:\Projects\.tmp'
+$env:npm_config_cache='g:\Projects\.npm-cache'
+npm test
+```
+
 Run the compiled API server:
 
 ```powershell
@@ -123,7 +139,9 @@ That command resolves to:
 ## Runtime Notes
 
 - live starter-zone routes use a small in-memory cache to avoid hammering upstream providers during polling
+- live starter-zone routes also keep a last-known-good briefing snapshot per zone so upstream failures can degrade to an explicitly labeled stale response instead of a hard outage
 - provider adapters are allowlisted in code; the API does not fetch arbitrary user-supplied upstream URLs
+- provider parsing is split across dedicated modules under `server/services/providers/`
 - the built-in live routes are meant as a starter operational layer, not a replacement for region-specific verification and local adapters
 
 ## Security Notes

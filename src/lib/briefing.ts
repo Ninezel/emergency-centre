@@ -24,6 +24,10 @@ function describeRefresh(profile: SelectedLocation['profile']) {
     return 'Waiting for first live sync'
   }
 
+  if (profile.freshness.status === 'stale') {
+    return `Showing a ${profile.freshness.snapshotAgeMinutes} minute old snapshot while providers recover`
+  }
+
   return `Last refreshed ${profile.lastUpdatedAt}`
 }
 
@@ -32,6 +36,8 @@ export function buildLocationBriefing(selectedLocation: SelectedLocation): Locat
   const criticalSignals = signalFeed.filter((signal) => signal.severity === 'Critical').length
   const monitoredCategories = new Set(signalFeed.map((signal) => signal.category)).size
   const areaLabel = selectedLocation.profile.name
+  const healthySources = selectedLocation.profile.sources.filter((source) => source.status === 'Healthy').length
+  const totalSources = selectedLocation.profile.sources.length
 
   return {
     selectedLocation,
@@ -45,7 +51,12 @@ export function buildLocationBriefing(selectedLocation: SelectedLocation): Locat
       activeSignals: signalFeed.length,
       criticalSignals,
       monitoredCategories,
-      sourceConfidence: selectedLocation.confidenceLabel,
+      sourceConfidence:
+        totalSources > 0
+          ? `${selectedLocation.confidenceLabel} · ${healthySources}/${totalSources} sources healthy${
+              selectedLocation.profile.freshness.status === 'stale' ? ' · stale snapshot' : ''
+            }`
+          : selectedLocation.confidenceLabel,
       lastRefresh: describeRefresh(selectedLocation.profile),
     },
     signalFeed,

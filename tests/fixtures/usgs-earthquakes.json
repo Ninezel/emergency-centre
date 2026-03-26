@@ -1,0 +1,46 @@
+{
+  "features": [
+    {
+      "id": "ci401",
+      "properties": {
+        "mag": 3.8,
+        "place": "20 km SE of San Francisco, California",
+        "time": 1774526400000,
+        "updated": 1774527300000,
+        "title": "M 3.8 - 20 km SE of San Francisco, California",
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci401"
+      },
+      "geometry": {
+        "coordinates": [-122.1, 37.6, 10.2]
+      }
+    },
+    {
+      "id": "ci402",
+      "properties": {
+        "mag": 6.2,
+        "place": "880 km SW of San Francisco, California",
+        "time": 1774522800000,
+        "updated": 1774523700000,
+        "title": "M 6.2 - Offshore California",
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci402"
+      },
+      "geometry": {
+        "coordinates": [-129.5, 32.4, 22.4]
+      }
+    },
+    {
+      "id": "ci403",
+      "properties": {
+        "mag": 2.0,
+        "place": "5 km N of Oakland, California",
+        "time": 1774528200000,
+        "updated": 1774529100000,
+        "title": "M 2.0 - 5 km N of Oakland, California",
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci403"
+      },
+      "geometry": {
+        "coordinates": [-122.27, 37.9, 8.1]
+      }
+    }
+  ]
+}

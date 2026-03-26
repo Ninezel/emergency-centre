@@ -1,0 +1,33 @@
+{
+  "features": [
+    {
+      "id": "urn:oid:2.49.0.1.840.0.abc123",
+      "properties": {
+        "id": "urn:oid:2.49.0.1.840.0.abc123",
+        "status": "Actual",
+        "messageType": "Alert",
+        "severity": "Severe",
+        "certainty": "Likely",
+        "urgency": "Immediate",
+        "event": "Flood Warning",
+        "effective": "2026-03-26T12:15:00+00:00",
+        "sent": "2026-03-26T12:10:00+00:00",
+        "areaDesc": "San Francisco County",
+        "senderName": "NWS San Francisco CA",
+        "headline": "Flood Warning issued March 26 at 5:10AM PDT",
+        "description": "Heavy rainfall will cause urban flooding in low-lying areas.",
+        "instruction": "Move away from flood prone roads."
+      }
+    },
+    {
+      "id": "urn:oid:2.49.0.1.840.0.ignore",
+      "properties": {
+        "status": "Actual",
+        "messageType": "Cancel",
+        "severity": "Minor",
+        "urgency": "Past",
+        "event": "Old Advisory"
+      }
+    }
+  ]
+}

@@ -5,7 +5,7 @@ import { OpenSourcePanel } from './components/OpenSourcePanel'
 import { OverviewPanel } from './components/OverviewPanel'
 import { SetupPanel } from './components/SetupPanel'
 import { SituationPanels } from './components/SituationPanels'
-import { countNewLiveAlerts, summarizeSyncResult } from './lib/alertSync'
+import { collectNewLiveAlerts, countNewLiveAlerts, summarizeSyncResult } from './lib/alertSync'
 import { playAlertTone } from './lib/audio'
 import { buildLocationBriefing } from './lib/briefing'
 import { fetchLiveBriefing } from './lib/feed'
@@ -27,6 +27,7 @@ import {
   readAppSetup,
   writeAppSetup,
 } from './lib/setup'
+import { ensureNotificationPermission, notifyNewLiveAlerts } from './lib/notifications'
 import type {
   AppSetup,
   CoverageDraft,
@@ -242,6 +243,7 @@ function App() {
       )
 
       const updatedProfilesById = new Map(syncedProfiles.map((profile) => [profile.id, profile]))
+      const newAlerts = collectNewLiveAlerts(profilesToSync, syncedProfiles)
       const newAlertCount = countNewLiveAlerts(profilesToSync, syncedProfiles)
       const syncSummary = summarizeSyncResult(syncedProfiles, hasCompletedInitialSync ? newAlertCount : 0)
 
@@ -262,6 +264,14 @@ function App() {
               `${syncSummary} New live signals arrived, but the browser blocked audio playback until a user gesture enables it.`,
             )
           }
+        }
+      }
+
+      if (hasCompletedInitialSync && newAlerts.length > 0 && setup.browserNotificationsEnabled) {
+        const deliveredCount = notifyNewLiveAlerts(newAlerts)
+
+        if (deliveredCount === 0 && reason === 'manual') {
+          setStatusMessage(`${syncSummary} Browser notifications are enabled, but permission is not available.`)
         }
       }
 
@@ -438,7 +448,24 @@ function App() {
     setStatusMessage(`Removed ${removedProfile?.name ?? 'the selected'} coverage feed.`)
   }
 
-  function handleUpdateSettings(next: SetupSettingsUpdate) {
+  async function handleUpdateSettings(next: SetupSettingsUpdate) {
+    if (next.browserNotificationsEnabled === true && !setup.browserNotificationsEnabled) {
+      const permission = await ensureNotificationPermission()
+
+      if (permission !== 'granted') {
+        setStatusMessage(
+          permission === 'unsupported'
+            ? 'Browser notifications are not available in this environment.'
+            : 'Browser notifications were not enabled. Grant permission and try again.',
+        )
+        setSetup((current) => ({
+          ...current,
+          browserNotificationsEnabled: false,
+        }))
+        return
+      }
+    }
+
     setSetup((current) => ({
       ...current,
       pollingIntervalSeconds: Math.max(
@@ -446,6 +473,8 @@ function App() {
         Number(next.pollingIntervalSeconds ?? current.pollingIntervalSeconds) || current.pollingIntervalSeconds,
       ),
       soundEnabled: next.soundEnabled ?? current.soundEnabled,
+      browserNotificationsEnabled:
+        next.browserNotificationsEnabled ?? current.browserNotificationsEnabled,
       soundVolume:
         next.soundVolume === undefined
           ? current.soundVolume

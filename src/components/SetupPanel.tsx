@@ -148,10 +148,10 @@ export function SetupPanel({
 
       <p className="panel-copy">
         Each coverage area should point to a JSON briefing endpoint that returns normalized weather,
-        signal, news, source-health, and readiness data. If your source does not support browser
-        access, place a small proxy or adapter in front of it. The preferred event list field is
-        `signals`, but the open-source client still accepts the legacy `hazards` field for
-        backwards compatibility.
+        signal, news, source-health, readiness, and freshness data. If your source does not
+        support browser access, place a small proxy or adapter in front of it. The preferred event
+        list field is `signals`, but the open-source client still accepts the legacy `hazards`
+        field for backwards compatibility.
       </p>
 
       <SetupTutorial />
@@ -395,6 +395,17 @@ export function SetupPanel({
               <button className="ghost-button" type="button" onClick={onTestSound}>
                 Test signal sound
               </button>
+
+              <label className="toggle-field">
+                <input
+                  checked={setup.browserNotificationsEnabled}
+                  onChange={(event) =>
+                    onUpdateSettings({ browserNotificationsEnabled: event.target.checked })
+                  }
+                  type="checkbox"
+                />
+                <span>Send browser notifications for new live signals</span>
+              </label>
             </div>
           </div>
 
@@ -404,7 +415,7 @@ export function SetupPanel({
               <h3>Minimum JSON response</h3>
               <p className="panel-copy">
                 Every live feed should return `outlook` and `weather` at minimum. `signals`,
-                `news`, `sources`, and `actions` are optional but recommended.
+                `news`, `sources`, `actions`, and `freshness` are optional but recommended.
               </p>
               <pre className="tutorial-schema-snippet">
 {`{
@@ -429,9 +440,16 @@ export function SetupPanel({
       "summary": "Low cloud and crosswinds may slow arrivals this afternoon.",
       "hotspotLabel": "Western approach",
       "reactionCount": 3,
-      "tags": ["crosswind", "arrival delay"]
+      "tags": ["crosswind", "arrival delay"],
+      "link": "https://status.example.com/ops/advisory-001"
     }
-  ]
+  ],
+  "freshness": {
+    "status": "live",
+    "checkedAt": "2026-03-26T12:25:00Z",
+    "snapshotAgeMinutes": 0,
+    "message": "Live provider data refreshed successfully."
+  }
 }`}
               </pre>
             </div>

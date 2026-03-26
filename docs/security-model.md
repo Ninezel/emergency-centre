@@ -20,6 +20,7 @@ The app stores local setup in browser local storage. That currently includes:
 - configured coverage records
 - polling interval
 - sound enabled state
+- browser notification preference
 - sound volume
 - unit system preference
 
@@ -45,6 +46,7 @@ Current posture:
 - it exposes only explicit catalog, live, and demo endpoints
 - it does not accept arbitrary upstream URLs for proxying
 - it does not store user accounts or personal subscriptions
+- it labels stale snapshot fallback explicitly through response freshness metadata
 - it should still be treated as a public service unless you place it behind your own network controls
 
 ## Current priority risks
@@ -54,6 +56,7 @@ Current posture:
 - unsafe rendering of third-party content
 - feed endpoints exposing secrets through client-side URLs
 - CORS workarounds that unintentionally widen exposure
+- silent provider failures that leave users looking at old data without clear freshness state
 
 ## Trust posture rules
 
@@ -71,6 +74,7 @@ Anything user-generated in future modules must never be visually indistinguishab
 - normalize data into the shared feed contract before it reaches users
 - label source names and types clearly
 - show delayed or manual-review states explicitly
+- surface stale snapshot state explicitly instead of silently implying a current live refresh
 - keep provider adapters replaceable
 - fail visibly when a feed breaks instead of silently serving stale confidence
 - keep any future server-side fetch route allowlisted; do not introduce an unrestricted open proxy

@@ -37,6 +37,10 @@ function describeActiveStatus(selectedLocation: SelectedLocation | null, isRefre
     return 'Feed issue'
   }
 
+  if (selectedLocation?.profile.freshness.status === 'stale') {
+    return 'Stale snapshot'
+  }
+
   if (selectedLocation?.profile.fetchStatus === 'live') {
     return 'Live feed'
   }
@@ -231,6 +235,17 @@ export function LocationConsole({
         <div className="status-note status-note-error">
           <span className="status-note-label">Feed issue</span>
           <strong>{selectedLocation.profile.fetchError}</strong>
+        </div>
+      ) : null}
+
+      {selectedLocation?.profile.fetchStatus === 'live' ? (
+        <div
+          className={`status-note ${
+            selectedLocation.profile.freshness.status === 'stale' ? 'status-note-error' : ''
+          }`}
+        >
+          <span className="status-note-label">Snapshot state</span>
+          <strong>{selectedLocation.profile.freshness.message}</strong>
         </div>
       ) : null}
 

@@ -42,6 +42,7 @@ Current behavior:
 - starter zones can prefill a local live-provider API endpoint when the briefing URL field is blank
 - `Refresh feeds now` forces an immediate sync
 - the sound test button plays the current signal tone
+- browser notifications can be enabled for new live signals after permission is granted
 - unit display can be switched between metric and imperial
 - a built-in tutorial walks users through coverage metadata, feed URLs, verification, and operating settings
 - an in-app schema card shows the minimum JSON shape needed for a live feed
@@ -103,6 +104,7 @@ Current behavior:
 - Vite proxies `/api/*` to the local API during development
 - built-in coverage zones now default to official-provider live briefing endpoints
 - official starter-zone coverage currently includes NWS, Met Office, Environment Agency, and USGS adapters depending on country and region
+- live starter-zone routes can fall back to clearly labeled stale snapshots if an upstream provider refresh fails after a previous success
 - demo briefing endpoints remain available as a fallback route
 - the API does not currently provide auth, persistence, or a generic proxy route
 
@@ -117,12 +119,14 @@ Current states:
 - waiting for first sync
 - syncing live feeds
 - live feed
+- stale snapshot
 - feed issue
 
 Current behavior:
 
 - feed errors are surfaced directly in the control panel
 - successful syncs update the overview metrics and downstream panels
+- stale snapshots surface an explicit operator-facing message instead of silently pretending the data is current
 
 ## 6. Polling and manual refresh
 
@@ -136,7 +140,7 @@ Current behavior:
 - feeds are automatically polled on the selected interval
 - the setup panel can force a manual refresh
 
-## 7. Sound alerts
+## 7. Sound alerts and browser notifications
 
 Purpose:
 
@@ -148,6 +152,7 @@ Current behavior:
 - alert volume is configurable
 - the app compares the previous and next live signal sets
 - the browser tone plays when new live signals arrive after the first successful sync
+- browser notifications can be enabled separately and are permission-gated by the browser
 
 Current limitation:
 
@@ -186,6 +191,7 @@ Current card contents:
 - hotspot label
 - field reaction count
 - tag chips when the feed provides `tags`
+- official source link when the feed provides `link`
 
 Current categories:
 
@@ -227,6 +233,7 @@ Current contents:
 - wind in metric or imperial display
 - rain chance
 - short advisory text
+- current freshness message when the selected briefing is stale
 
 ## 11. Context bulletins
 
@@ -241,6 +248,7 @@ Current contents:
 - publish time
 - summary
 - scope label
+- source link when available
 
 ## 12. Readiness actions
 
@@ -267,6 +275,9 @@ Current contents:
 - source status
 - last sync
 - operational note
+- fetch method
+- fetched-at timestamp when available
+- source link when available
 
 Current statuses:
 

@@ -19,6 +19,8 @@ export type Severity = 'Critical' | 'High' | 'Moderate' | 'Advisory'
 export type LocationMode = 'directory' | 'search' | 'suggestion'
 export type FeedFetchStatus = 'idle' | 'syncing' | 'live' | 'error'
 export type UnitSystem = 'metric' | 'imperial'
+export type SourceTransport = 'API' | 'RSS' | 'Scraped page' | 'Derived'
+export type BriefingFreshnessStatus = 'live' | 'stale'
 
 export interface Coordinates {
   lat: number
@@ -40,6 +42,7 @@ export interface NewsItem {
   publishedAt: string
   summary: string
   scope: 'Local' | 'Regional' | 'National' | 'Global'
+  link?: string
 }
 
 export interface SignalItem {
@@ -55,6 +58,7 @@ export interface SignalItem {
   hotspotLabel: string
   reactionCount: number
   tags: string[]
+  link?: string
 }
 
 export type HazardSignal = SignalItem
@@ -76,6 +80,9 @@ export interface SourceHealth {
   status: 'Healthy' | 'Delayed' | 'Manual review'
   lastSync: string
   note: string
+  method?: SourceTransport
+  link?: string
+  fetchedAt?: string
 }
 
 export interface ReadinessAction {
@@ -84,6 +91,51 @@ export interface ReadinessAction {
   description: string
   whenToUse: string
 }
+
+export interface BriefingFreshness {
+  status: BriefingFreshnessStatus
+  checkedAt: string
+  snapshotAgeMinutes: number
+  message: string
+}
+
+export interface NwsZoneProviderConfig {
+  id: 'nws'
+  label: string
+  pointsUrlTemplate: string
+  alertsUrlTemplate: string
+}
+
+export interface MetOfficeZoneProviderConfig {
+  id: 'met-office'
+  label: string
+  forecastPageUrl: string
+  warningsUrl: string
+}
+
+export interface EnvironmentAgencyZoneProviderConfig {
+  id: 'environment-agency'
+  label: string
+  floodUrlTemplate: string
+  radiusKm: number
+  minimumSeverityLevel: number
+}
+
+export interface UsgsZoneProviderConfig {
+  id: 'usgs'
+  label: string
+  feedUrl: string
+  radiusKm: number
+  extendedRadiusKm: number
+  extendedMagnitude: number
+  minimumMagnitude: number
+}
+
+export type CoverageZoneProviderConfig =
+  | NwsZoneProviderConfig
+  | MetOfficeZoneProviderConfig
+  | EnvironmentAgencyZoneProviderConfig
+  | UsgsZoneProviderConfig
 
 export interface LocationProfile {
   id: string
@@ -103,6 +155,7 @@ export interface LocationProfile {
   lastUpdatedAt: string
   fetchStatus: FeedFetchStatus
   fetchError: string | null
+  freshness: BriefingFreshness
 }
 
 export interface LocationSuggestion {
@@ -122,11 +175,13 @@ export interface LiveBriefingResponse {
   sources: SourceHealth[]
   actions: ReadinessAction[]
   refreshedAt?: string
+  freshness: BriefingFreshness
 }
 
 export interface AppSetup {
   pollingIntervalSeconds: number
   soundEnabled: boolean
+  browserNotificationsEnabled: boolean
   soundVolume: number
   unitSystem: UnitSystem
   coverageProfiles: LocationProfile[]
@@ -153,6 +208,7 @@ export interface CoverageZoneTemplate {
   aliases: string[]
   locationCodes: string[]
   coordinates: Coordinates
+  providers: CoverageZoneProviderConfig[]
 }
 
 export interface CoverageZoneSuggestion {
@@ -163,7 +219,10 @@ export interface CoverageZoneSuggestion {
 }
 
 export type SetupSettingsUpdate = Partial<
-  Pick<AppSetup, 'pollingIntervalSeconds' | 'soundEnabled' | 'soundVolume' | 'unitSystem'>
+  Pick<
+    AppSetup,
+    'pollingIntervalSeconds' | 'soundEnabled' | 'browserNotificationsEnabled' | 'soundVolume' | 'unitSystem'
+  >
 >
 
 export interface SelectedLocation {

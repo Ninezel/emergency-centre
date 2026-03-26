@@ -27,6 +27,7 @@ Recommended fields:
 - `news`
 - `sources`
 - `actions`
+- `freshness`
 
 Legacy support:
 
@@ -41,8 +42,10 @@ See the main repository document:
 - do not embed provider secrets in client-visible URLs
 - use a server or edge adapter if the upstream needs secrets
 - label source provenance clearly
+- expose upstream links and fetch method data where possible
 - keep signal IDs stable across refreshes
 - fail visibly if the upstream breaks
+- if you serve a stale fallback snapshot, label it explicitly instead of implying the data is fully current
 
 ## Recommended Integration Pattern
 

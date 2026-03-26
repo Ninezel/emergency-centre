@@ -14,6 +14,7 @@ Each coverage area in Emergency Centre points to one live briefing URL. That end
 - `sources`
 - `actions`
 - `refreshedAt`
+- `freshness`
 
 Legacy compatibility:
 
@@ -44,7 +45,8 @@ Legacy compatibility:
       "summary": "Surface water is building quickly in repeated rain bands.",
       "hotspotLabel": "Riverside corridor",
       "reactionCount": 12,
-      "tags": ["surface water", "road closures"]
+      "tags": ["surface water", "road closures"],
+      "link": "https://warnings.example.gov/flood/signal-001"
     },
     {
       "id": "signal-002",
@@ -58,7 +60,8 @@ Legacy compatibility:
       "summary": "Low cloud and crosswinds may slow arrivals this afternoon.",
       "hotspotLabel": "Western approach",
       "reactionCount": 3,
-      "tags": ["crosswind", "arrival delays"]
+      "tags": ["crosswind", "arrival delays"],
+      "link": "https://status.example.com/ops/advisory-001"
     }
   ],
   "news": [
@@ -68,7 +71,8 @@ Legacy compatibility:
       "source": "City briefing desk",
       "publishedAt": "2026-03-26T12:18:00Z",
       "summary": "Residents can access charging and hot drinks at the civic hall.",
-      "scope": "Local"
+      "scope": "Local",
+      "link": "https://city.example.gov/bulletins/charging-point"
     }
   ],
   "sources": [
@@ -78,7 +82,10 @@ Legacy compatibility:
       "type": "Weather",
       "status": "Healthy",
       "lastSync": "2026-03-26T12:20:00Z",
-      "note": "Radar frames are current."
+      "note": "Radar frames are current.",
+      "method": "API",
+      "link": "https://api.example.gov/weather/radar",
+      "fetchedAt": "2026-03-26T12:20:03Z"
     }
   ],
   "actions": [
@@ -89,7 +96,13 @@ Legacy compatibility:
       "whenToUse": "Before the next heavy band arrives"
     }
   ],
-  "refreshedAt": "2026-03-26T12:20:00Z"
+  "refreshedAt": "2026-03-26T12:20:00Z",
+  "freshness": {
+    "status": "live",
+    "checkedAt": "2026-03-26T12:20:03Z",
+    "snapshotAgeMinutes": 0,
+    "message": "Live provider data refreshed successfully."
+  }
 }
 ```
 
@@ -121,6 +134,7 @@ Legacy compatibility:
 - `hotspotLabel`: compact hotspot or corridor label
 - `reactionCount`: numeric count used by the current UI
 - `tags`: optional short descriptors shown as chips in the UI
+- `link`: optional official source URL for the signal item
 
 ### `news[]`
 
@@ -130,6 +144,7 @@ Legacy compatibility:
 - `publishedAt`
 - `summary`
 - `scope`: one of `Local`, `Regional`, `National`, `Global`
+- `link`: optional upstream bulletin URL
 
 ### `sources[]`
 
@@ -139,6 +154,16 @@ Legacy compatibility:
 - `status`: one of `Healthy`, `Delayed`, `Manual review`
 - `lastSync`
 - `note`
+- `method`: one of `API`, `RSS`, `Scraped page`, `Derived`
+- `link`: optional upstream provider URL
+- `fetchedAt`: optional fetch timestamp separate from the source's own published sync time
+
+### `freshness`
+
+- `status`: `live` or `stale`
+- `checkedAt`: when this response was checked or generated
+- `snapshotAgeMinutes`: age of the underlying snapshot when stale fallback is used
+- `message`: operator-facing explanation of the current freshness state
 
 ### `actions[]`
 
@@ -150,6 +175,7 @@ Legacy compatibility:
 ## Implementation notes
 
 - the built-in `/api/briefings/live/:zoneId` routes return this same normalized schema after adapting official provider payloads
+- built-in live routes may return `freshness.status = "stale"` while a background refresh retry is in flight
 - The browser fetches this URL directly in the open-source baseline.
 - If the upstream provider requires authentication or blocks browser requests, put a proxy or adapter in front of it.
 - Keep signal IDs stable across refreshes so new-signal sound detection behaves correctly.
