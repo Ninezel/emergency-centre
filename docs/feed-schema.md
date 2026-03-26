@@ -149,6 +149,7 @@ Legacy compatibility:
 
 ## Implementation notes
 
+- the built-in `/api/briefings/live/:zoneId` routes return this same normalized schema after adapting official provider payloads
 - The browser fetches this URL directly in the open-source baseline.
 - If the upstream provider requires authentication or blocks browser requests, put a proxy or adapter in front of it.
 - Keep signal IDs stable across refreshes so new-signal sound detection behaves correctly.

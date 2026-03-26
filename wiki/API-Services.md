@@ -29,6 +29,12 @@ Default local origin:
 4. Open `http://localhost:8787/api/health`.
 5. Confirm you get a JSON response with `"ok": true`.
 
+## Step-By-Step: Run The Compiled API
+
+1. Build the project with `npm run build`.
+2. Start the compiled API with `npm run start:api`.
+3. Confirm `http://localhost:8787/api/health` responds.
+
 ## Step-By-Step: Run Frontend And API Together
 
 1. Install dependencies with `npm install`.
@@ -77,6 +83,12 @@ Returns one built-in starter zone by ID.
 ### `GET /api/briefings/live/:zoneId`
 
 Returns a normalized live briefing for the requested starter zone using the built-in provider adapters.
+
+Current starter coverage:
+
+- `US`: NWS forecast plus active alerts, with nearby USGS earthquakes
+- `GB` England starter zones: Met Office forecast plus warnings, Environment Agency flood warnings, and nearby USGS earthquakes
+- `GB` Wales, Scotland, and Northern Ireland starter zones: Met Office forecast plus warnings, with nearby USGS earthquakes
 
 ### `GET /api/briefings/demo/:zoneId`
 

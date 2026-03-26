@@ -110,6 +110,22 @@ $env:npm_config_cache='g:\Projects\.npm-cache'
 npm run build
 ```
 
+Run the compiled API server:
+
+```powershell
+npm run start:api
+```
+
+That command resolves to:
+
+- `node dist-server/server/index.js`
+
+## Runtime Notes
+
+- live starter-zone routes use a small in-memory cache to avoid hammering upstream providers during polling
+- provider adapters are allowlisted in code; the API does not fetch arbitrary user-supplied upstream URLs
+- the built-in live routes are meant as a starter operational layer, not a replacement for region-specific verification and local adapters
+
 ## Security Notes
 
 - The current API does not implement auth.

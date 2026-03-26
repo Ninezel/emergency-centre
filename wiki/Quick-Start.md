@@ -58,3 +58,9 @@ That builds:
 
 - the frontend into `dist/`
 - the API into `dist-server/`
+
+Run the compiled API with:
+
+```powershell
+npm run start:api
+```

@@ -102,6 +102,7 @@ Current behavior:
 - the repo ships with a local Node API server
 - Vite proxies `/api/*` to the local API during development
 - built-in coverage zones now default to official-provider live briefing endpoints
+- official starter-zone coverage currently includes NWS, Met Office, Environment Agency, and USGS adapters depending on country and region
 - demo briefing endpoints remain available as a fallback route
 - the API does not currently provide auth, persistence, or a generic proxy route
 

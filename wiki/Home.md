@@ -27,6 +27,8 @@ If you want to wire in real providers, go to [[Connect Real Feeds]].
 
 If you want to run or extend the local API, go to [[API Services]].
 
+If you want the latest project release notes, go to [[Changelog]].
+
 ## Typical Paths
 
 ### 1. I just want to see the app working
@@ -68,4 +70,5 @@ Follow:
 - [[API Services]]
 - [[Self Hosting]]
 - [[Security Model]]
+- [[Changelog]]
 - [[FAQ]]

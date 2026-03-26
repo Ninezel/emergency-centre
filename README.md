@@ -155,6 +155,7 @@ Important constraints:
 
 ## Documentation
 
+- [Changelog](./CHANGELOG.md)
 - [Architecture notes](./docs/architecture.md)
 - [API reference](./docs/api-reference.md)
 - [Feature reference](./docs/feature-reference.md)

@@ -33,6 +33,12 @@ $env:npm_config_cache='g:\Projects\.npm-cache'
 npm run dev:api
 ```
 
+Run the compiled API after `npm run build` with:
+
+```powershell
+npm run start:api
+```
+
 ## Project layout
 
 - `src/App.tsx`: state orchestration, polling, selection, and top-level composition
@@ -100,6 +106,7 @@ Do not treat this as a secure store. It is a convenience layer for local configu
 Before opening a pull request:
 
 - run `npm run build`
+- if you changed server behavior, run `npm run start:api` and hit at least one live starter route
 - test the setup flow by adding and removing a coverage feed
 - test a successful live refresh
 - test a failing feed URL and confirm the error state is visible

@@ -7,4 +7,5 @@
 - [[API Services]]
 - [[Self Hosting]]
 - [[Security Model]]
+- [[Changelog]]
 - [[FAQ]]
