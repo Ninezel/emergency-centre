@@ -6,7 +6,7 @@ No. The open-source baseline is public-first and does not require login.
 
 ## Does it include live provider data out of the box?
 
-No. It includes starter coverage zones and demo briefings, but real operational use still requires trusted feeds.
+Partly. The built-in starter zones now include live provider routes backed by official public sources, and the demo routes are still available as a fallback. Broader operational coverage still requires more provider adapters and local verification.
 
 ## Does the built-in starter directory cover every place?
 

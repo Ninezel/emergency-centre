@@ -39,7 +39,7 @@ Current behavior:
 - the app ships with a built-in starter directory for the United Kingdom and United States
 - users can pick `country -> region/state -> coverage area` to prefill a coverage record
 - users can search the starter directory by UK postcode or US ZIP code
-- starter zones can prefill a local demo API endpoint when the briefing URL field is blank
+- starter zones can prefill a local live-provider API endpoint when the briefing URL field is blank
 - `Refresh feeds now` forces an immediate sync
 - the sound test button plays the current signal tone
 - unit display can be switched between metric and imperial
@@ -94,13 +94,15 @@ Current endpoints:
 - `GET /api/catalog/zones`
 - `GET /api/catalog/lookup`
 - `GET /api/catalog/zones/:zoneId`
+- `GET /api/briefings/live/:zoneId`
 - `GET /api/briefings/demo/:zoneId`
 
 Current behavior:
 
 - the repo ships with a local Node API server
 - Vite proxies `/api/*` to the local API during development
-- built-in coverage zones can use demo briefing endpoints immediately
+- built-in coverage zones now default to official-provider live briefing endpoints
+- demo briefing endpoints remain available as a fallback route
 - the API does not currently provide auth, persistence, or a generic proxy route
 
 ## 5. Coverage sync states

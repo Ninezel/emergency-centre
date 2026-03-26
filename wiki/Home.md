@@ -8,7 +8,8 @@ It currently includes:
 - built-in starter coverage zones for the United Kingdom and United States
 - postcode and ZIP lookup
 - an optional local Node API
-- demo briefing endpoints so the app works end to end before a real upstream provider is connected
+- live briefing endpoints backed by official providers for the built-in starter zones
+- demo briefing endpoints as a fallback when you want a deterministic local feed
 
 Project links:
 
@@ -35,7 +36,7 @@ Follow:
 1. [[Quick Start]]
 2. [[Coverage Zones]]
 
-### 2. I want to run the local API and demo briefings
+### 2. I want to run the local API and starter live briefings
 
 Follow:
 
@@ -56,7 +57,8 @@ Follow:
 - `Coverage area`: a named monitoring zone with codes, aliases, coordinates, and a briefing URL
 - `Signals`: normalized weather, infrastructure, transport, airspace, public-safety, or other monitoring items
 - `Starter directory`: built-in bootstrap coverage data for supported countries
-- `Demo briefing`: generated normalized feed data served by the local API
+- `Live briefing`: normalized feed data served by the local API from allowlisted official providers
+- `Demo briefing`: generated fallback feed data served by the local API
 
 ## Main Pages
 

@@ -48,6 +48,8 @@ npm run dev:api
 - `src/lib/briefing.ts`: briefing shaping and summary metrics
 - `server/index.ts`: optional local API entrypoint
 - `server/services/catalogService.ts`: API-facing starter zone catalog services
+- `server/services/liveBriefingService.ts`: live provider adapters and normalization for starter zones
+- `server/services/providerCache.ts`: allowlisted upstream fetch and in-memory cache helpers
 - `server/services/demoBriefingService.ts`: demo API briefing generation
 - `src/types.ts`: shared frontend contracts
 - `src/styles.css`: visual system and responsive layout

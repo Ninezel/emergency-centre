@@ -164,7 +164,7 @@ export function SetupPanel({
             <p className="panel-copy">
               Pick a country, region, and coverage area, or search by postcode or ZIP code. This
               fills the coverage metadata into the form below. If the feed URL is blank, the
-              starter flow also loads a local demo API briefing endpoint for that zone.
+              starter flow also loads a local live-provider API briefing endpoint for that zone.
             </p>
 
             <div className="setup-field-grid">

@@ -43,7 +43,8 @@ The repository now includes a small Node API service for:
 
 - starter coverage catalog endpoints
 - postcode and ZIP lookup endpoints
-- demo briefing endpoints for built-in coverage zones
+- live briefing endpoints for built-in coverage zones backed by official providers
+- demo briefing endpoints as a fallback for built-in coverage zones
 - local health checks and API discovery
 
 ## Core Capabilities
@@ -52,7 +53,7 @@ The repository now includes a small Node API service for:
 - country, region, and coverage-area browsing for configured feeds
 - built-in UK and US starter directory for coverage setup
 - postcode and ZIP lookup against the built-in starter directory
-- optional local API server for starter catalog and demo briefing routes
+- optional local API server for starter catalog, live provider, and demo fallback routes
 - live polling for configured briefing feeds
 - browser sound alerts when new live signals appear
 - metric or imperial display preference
@@ -103,7 +104,7 @@ npm run build
 Run the compiled API server with:
 
 ```powershell
-node dist-server/index.js
+node dist-server/server/index.js
 ```
 
 Useful local API endpoints:
@@ -114,7 +115,16 @@ Useful local API endpoints:
 - `GET /api/catalog/regions?country=GB`
 - `GET /api/catalog/zones?country=GB&region=greater-london`
 - `GET /api/catalog/lookup?q=SW1A%201AA&country=GB`
+- `GET /api/briefings/live/gb-eng-greater-london-central`
 - `GET /api/briefings/demo/gb-eng-greater-london-central`
+
+The starter zones now default to `/api/briefings/live/:zoneId` when the briefing URL field is left blank.
+Those live routes currently normalize official provider data from:
+
+- `NWS` weather forecasts and alerts for United States starter zones
+- `Met Office` forecast pages and regional warning RSS feeds for United Kingdom starter zones
+- `Environment Agency` flood warnings for England starter zones
+- `USGS` daily earthquake feeds for nearby seismic activity
 
 ## Feed Requirements
 
@@ -166,7 +176,7 @@ Important constraints:
 - `src/lib/alertSync.ts`: live-signal diffing and sync summary helpers
 - `src/lib/audio.ts`: browser signal sound playback
 - `src/lib/units.ts`: display-layer unit conversion for weather output
-- `server/`: Node API entrypoint plus catalog and demo-briefing services
+- `server/`: Node API entrypoint plus catalog, live-provider, and demo-briefing services
 - `src/types.ts`: shared frontend contracts
 - `src/styles.css`: visual system and responsive layout
 

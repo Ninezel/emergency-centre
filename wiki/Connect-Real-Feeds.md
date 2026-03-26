@@ -7,7 +7,7 @@ Emergency Centre is designed to work with normalized JSON briefing feeds.
 1. Get the app running locally.
 2. Open the setup panel.
 3. Load a starter zone or create a manual coverage area.
-4. Replace the demo briefing URL with your real feed endpoint.
+4. Replace the built-in live or demo briefing URL with your own feed endpoint if you want to override the starter adapter.
 5. Make sure the endpoint returns JSON in the Emergency Centre contract.
 6. Click `Add coverage area`.
 7. Click `Refresh feeds now`.

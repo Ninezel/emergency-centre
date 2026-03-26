@@ -15,7 +15,7 @@ The starter directory is there to bootstrap setup quickly. It is not meant to be
 4. Choose a coverage area.
 5. Click `Load selected coverage zone`.
 6. Review the prefilled metadata.
-7. Add a real feed URL, or leave the field blank to use the built-in demo API route.
+7. Add a custom feed URL, or leave the field blank to use the built-in live provider API route.
 8. Click `Add coverage area`.
 9. Click `Refresh feeds now` if you want to force the first sync immediately.
 
@@ -27,7 +27,7 @@ The starter directory is there to bootstrap setup quickly. It is not meant to be
 4. Click `Find zone`.
 5. Select the matching starter zone.
 6. Confirm the coverage metadata looks correct.
-7. Add a real feed URL or use the demo endpoint.
+7. Add a custom feed URL or use the built-in live endpoint.
 8. Save the coverage area.
 
 ## What Gets Prefilled
@@ -42,6 +42,10 @@ When a starter zone is loaded, Emergency Centre fills:
 - coordinates
 
 If the feed URL is blank, it also fills:
+
+- `/api/briefings/live/:zoneId`
+
+The demo fallback route is still available manually:
 
 - `/api/briefings/demo/:zoneId`
 

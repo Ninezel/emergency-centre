@@ -4,6 +4,7 @@ Emergency Centre now ships with a small optional Node API service. It is intende
 
 - starter coverage catalog browsing
 - postcode and ZIP lookup
+- built-in live briefing endpoints backed by official providers
 - built-in demo briefing endpoints
 - local health checks
 
@@ -63,11 +64,21 @@ Query params:
 
 Returns one built-in starter zone by ID.
 
+### `GET /api/briefings/live/:zoneId`
+
+Returns a normalized live briefing for one starter zone.
+
+Current starter-provider coverage:
+
+- `US`: NWS forecast plus active alerts, with nearby USGS earthquakes
+- `GB` England starter zones: Met Office forecast plus warnings, Environment Agency flood warnings, and nearby USGS earthquakes
+- `GB` Wales, Scotland, and Northern Ireland starter zones: Met Office forecast plus warnings, with nearby USGS earthquakes
+
 ### `GET /api/briefings/demo/:zoneId`
 
 Returns a normalized demo briefing for one starter zone.
 
-This route exists so the frontend can be used end to end before a real provider is connected.
+This route still exists as a fallback if you want a deterministic local feed without upstream calls.
 
 ## Development
 
@@ -104,4 +115,5 @@ npm run build
 - The current API does not implement auth.
 - The current API does not implement rate limiting.
 - The current API does not act as a generic open proxy.
-- If you add upstream fetching later, keep the targets allowlisted and documented.
+- The built-in live route uses allowlisted official providers only.
+- If you add more upstream fetching later, keep the targets allowlisted and documented.

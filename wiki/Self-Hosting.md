@@ -29,7 +29,7 @@ This produces:
 ## Run The Built API
 
 ```powershell
-node dist-server/index.js
+node dist-server/server/index.js
 ```
 
 ## Environment

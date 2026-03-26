@@ -34,7 +34,7 @@ npm run dev
 5. Open the frontend URL printed by Vite.
 6. Go to the setup panel.
 7. Use the starter directory to load a UK or US coverage zone.
-8. Leave the feed URL blank if you want to use the built-in demo API endpoint.
+8. Leave the feed URL blank if you want to use the built-in live-provider API endpoint.
 9. Add the coverage area.
 10. Confirm the overview and signals panels populate.
 

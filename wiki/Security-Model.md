@@ -20,7 +20,7 @@ The local API service is intentionally narrow.
 Current posture:
 
 - explicit catalog routes only
-- explicit demo briefing routes only
+- explicit live and demo briefing routes only
 - no generic open proxy
 - no account storage
 

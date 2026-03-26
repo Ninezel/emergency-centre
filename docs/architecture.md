@@ -23,7 +23,7 @@ That means the baseline app does not assume:
 
 1. A user configures one or more coverage areas in the setup panel.
    The setup panel can now prefill coverage metadata from a built-in starter directory for supported countries.
-2. If the feed URL is blank, the starter flow can prefill a local demo API endpoint such as `/api/briefings/demo/:zoneId`.
+2. If the feed URL is blank, the starter flow now prefills a local live API endpoint such as `/api/briefings/live/:zoneId`.
 3. The setup is saved to browser local storage.
 4. Search and directory selection operate on those configured coverage profiles.
 5. The app polls each profile's briefing URL on a fixed interval.
@@ -109,6 +109,7 @@ Hosts the optional local API server:
 
 - service discovery and health routes
 - coverage catalog routes
+- built-in live provider routes
 - built-in demo briefing routes
 
 ### `server/services/catalogService.ts`
@@ -120,6 +121,15 @@ Provides API-safe catalog helpers:
 - zone listing
 - postcode and ZIP lookup
 - individual zone lookup
+
+### `server/services/liveBriefingService.ts`
+
+Generates normalized live briefings for starter coverage zones by fetching and scraping a small allowlisted set of official public providers. The current adapters cover:
+
+- NWS point forecasts and active alerts
+- Met Office public forecast pages and regional severe-weather warning RSS feeds
+- Environment Agency flood warnings for England starter zones
+- USGS daily earthquake feeds
 
 ### `server/services/demoBriefingService.ts`
 

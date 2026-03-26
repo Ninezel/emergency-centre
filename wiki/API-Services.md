@@ -10,7 +10,8 @@ Default local origin:
 
 - exposing starter coverage catalog data
 - looking up built-in zones by postcode, ZIP, alias, place, region, or country
-- serving normalized demo briefings
+- serving normalized live briefings from official providers
+- serving normalized demo briefings as a fallback
 - giving self-hosters a simple backend baseline to extend
 
 ## What It Is Not
@@ -34,7 +35,7 @@ Default local origin:
 2. Start both services with `npm run dev`.
 3. Open the frontend URL shown by Vite.
 4. Use the setup panel starter directory.
-5. Load a built-in zone without a custom feed URL to use the demo API endpoint automatically.
+5. Load a built-in zone without a custom feed URL to use the live provider API endpoint automatically.
 
 ## Endpoints
 
@@ -72,6 +73,10 @@ Looks up starter zones by:
 ### `GET /api/catalog/zones/:zoneId`
 
 Returns one built-in starter zone by ID.
+
+### `GET /api/briefings/live/:zoneId`
+
+Returns a normalized live briefing for the requested starter zone using the built-in provider adapters.
 
 ### `GET /api/briefings/demo/:zoneId`
 

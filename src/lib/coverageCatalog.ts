@@ -202,6 +202,6 @@ export function createDraftFromCoverageCatalogZone(
     locationCodes: zone.locationCodes,
     latitude: zone.coordinates.lat,
     longitude: zone.coordinates.lng,
-    briefingUrl: currentBriefingUrl || `/api/briefings/demo/${zone.id}`,
+    briefingUrl: currentBriefingUrl || `/api/briefings/live/${zone.id}`,
   }
 }

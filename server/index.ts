@@ -1,5 +1,6 @@
 import express from 'express'
 import { buildDemoBriefing } from './services/demoBriefingService.js'
+import { buildLiveBriefing } from './services/liveBriefingService.js'
 import {
   getCoverageZoneById,
   listCoverageCountries,
@@ -24,6 +25,7 @@ app.get('/api', (_request, response) => {
       '/api/catalog/zones?country=GB&region=greater-london',
       '/api/catalog/lookup?q=SW1A%201AA&country=GB',
       '/api/catalog/zones/:zoneId',
+      '/api/briefings/live/:zoneId',
       '/api/briefings/demo/:zoneId',
     ],
   })
@@ -99,6 +101,29 @@ app.get('/api/briefings/demo/:zoneId', (request, response) => {
   }
 
   response.json(buildDemoBriefing(zone))
+})
+
+app.get('/api/briefings/live/:zoneId', async (request, response) => {
+  const zone = getCoverageZoneById(request.params.zoneId)
+
+  if (!zone) {
+    response.status(404).json({
+      error: 'briefing_zone_not_found',
+      message: `No live briefing is available for "${request.params.zoneId}".`,
+    })
+    return
+  }
+
+  try {
+    response.set('Cache-Control', 'public, max-age=60')
+    response.json(await buildLiveBriefing(zone))
+  } catch (error) {
+    response.status(502).json({
+      error: 'live_briefing_fetch_failed',
+      message: `Live providers could not be loaded for "${request.params.zoneId}".`,
+      detail: error instanceof Error ? error.message : String(error),
+    })
+  }
 })
 
 app.listen(port, () => {

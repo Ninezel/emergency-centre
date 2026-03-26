@@ -38,11 +38,11 @@ Implications:
 
 ## Local API service boundary
 
-The repository now includes a small local Node API service used for starter catalog routes and demo briefings.
+The repository now includes a small local Node API service used for starter catalog routes, allowlisted live-provider routes, and demo briefings.
 
 Current posture:
 
-- it exposes only explicit catalog and demo endpoints
+- it exposes only explicit catalog, live, and demo endpoints
 - it does not accept arbitrary upstream URLs for proxying
 - it does not store user accounts or personal subscriptions
 - it should still be treated as a public service unless you place it behind your own network controls
