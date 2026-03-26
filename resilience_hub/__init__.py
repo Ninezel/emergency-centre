@@ -1,0 +1,1 @@
+"""Resilience Hub desktop application."""

@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "resilience-hub"
+version = "0.1.0"
+description = "Open-source community resilience platform with a PyQt desktop interface."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "AGPL-3.0-or-later" }
+authors = [
+  { name = "ninezel" }
+]
+dependencies = [
+  "PyQt6>=6.7,<7"
+]
+
+[project.urls]
+Homepage = "https://ko-fi.com/ninezel"
+Funding = "https://ko-fi.com/ninezel"
+
+[project.scripts]
+resilience-hub = "resilience_hub.app:main"
+
+[tool.setuptools]
+packages = ["resilience_hub"]
